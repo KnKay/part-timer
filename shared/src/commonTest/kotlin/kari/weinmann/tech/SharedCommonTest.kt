@@ -3,7 +3,7 @@ package kari.weinmann.tech
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ComposeAppDesktopTest {
+class SharedCommonTest {
 
     @Test
     fun example() {
