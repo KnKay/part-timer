@@ -9,8 +9,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.*
-import kari.weinmann.tech.timetracker.TimetrackerInterface
-import kari.weinmann.tech.timetracker.UserInfo
+import kari.weinmann.tech.timetracker.*
 
 class ActitimeConnection(val client: HttpClient):TimetrackerInterface {
     companion object Factory {
@@ -22,7 +21,7 @@ class ActitimeConnection(val client: HttpClient):TimetrackerInterface {
             val httpClient = HttpClient() {
                 expectSuccess = true
                 defaultRequest {
-                    url(baseUrl)
+                    url("$baseUrl/api/v1/")
                 }
 
                 install(ContentNegotiation) {
@@ -42,6 +41,14 @@ class ActitimeConnection(val client: HttpClient):TimetrackerInterface {
         }
     }
 
-    override suspend fun whoAmI(): UserInfo = client.get("/api/v1/users/me").body()
+    override suspend fun whoAmI(): UserInfo = client.get("users/me").body()
+    override suspend fun getGroups(): List<Group> = client.get("customers").body<ApiRessource<Group>>().items!!
+    override suspend fun getProjects(): List<Project> = client.get("projects").body<ApiRessource<Project>>().items!!
+    override suspend fun getProjectTasks(projectId: Int): List<Task> =client.get("tasks"){
+        url {
+            parameters.append("projectIds", "$projectId")
+        }
+    }.body<ApiRessource<Task>>().items!!
 
+    override suspend fun getTasks(): List<Task> = client.get("tasks").body<ApiRessource<Task>>().items!!
 }
