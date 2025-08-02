@@ -4,6 +4,8 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     kotlin("plugin.serialization") version "2.2.0"
+
+
 }
 
 kotlin {
@@ -34,6 +36,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.json)
+            implementation(libs.kotlinx.datetime)
 
         }
         commonTest.dependencies {
