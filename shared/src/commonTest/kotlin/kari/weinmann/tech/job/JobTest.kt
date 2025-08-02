@@ -21,5 +21,7 @@ import kotlin.test.*
 }
 
 @Test
- fun getWeekSaldo() {}
+ fun getWeekSaldo() = runTest{
+  val res = dut.getWeekSaldo()
+}
 }

@@ -23,7 +23,10 @@ class Job(val timeTracker: TimetrackerInterface, val weeklyHours: Int) {
     @OptIn(ExperimentalTime::class)
     suspend fun getWeekSaldo():Int{
         val today = LocalDate.fromEpochDays(Clock.System.now().epochSeconds/86400)
-        val lastMonday = today.dayOfWeek
-        return 0
+        val dow = today.dayOfWeek.compareTo(DayOfWeek.MONDAY)
+        val requiredHours = dow*weeklyHours/7
+        val from = LocalDate.fromEpochDays(today.toEpochDays()-dow)
+        val spent = timeTracker.getSpentTime(from).spent/60
+        return requiredHours.toInt() - spent
     }
 }
